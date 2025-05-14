@@ -4,9 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>แจ้งการชำระเงิน</title>
-  <!-- ฟอนต์ Kanit จาก Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;600&display=swap" rel="stylesheet">
-
   <style>
     body {
       font-family: 'Kanit', sans-serif;
@@ -14,9 +12,8 @@
       margin: 0;
       padding: 0;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      flex-direction: column;
+      min-height: 100vh;
     }
 
     .container {
@@ -24,14 +21,15 @@
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       width: 100%;
-      max-width: 500px;
-      padding: 30px;
+      max-width: 440px;
+      margin: auto;
+      padding: 25px;
       text-align: center;
     }
 
     h1 {
       color: #333;
-      font-size: 1.8em;
+      font-size: 1.6em;
       margin-bottom: 20px;
       font-weight: 600;
     }
@@ -39,38 +37,34 @@
     form {
       display: flex;
       flex-direction: column;
-      gap: 15px;
+      gap: 12px;
     }
 
     label {
       font-weight: 500;
       color: #555;
       text-align: left;
-      margin-bottom: 5px;
+      font-size: 0.95em;
     }
 
     input[type="text"],
     input[type="number"],
     input[type="date"],
     input[type="file"] {
-      padding: 12px;
+      padding: 10px;
       border: 2px solid #d1d1d6;
       border-radius: 5px;
-      font-size: 16px;
-      outline: none;
-      transition: border 0.3s ease-in-out;
+      font-size: 15px;
       font-family: 'Kanit', sans-serif;
+      outline: none;
     }
 
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    input[type="date"]:focus,
-    input[type="file"]:focus {
+    input:focus {
       border-color: #4CAF50;
     }
 
     button {
-      padding: 12px;
+      padding: 10px;
       background-color: #4CAF50;
       color: white;
       font-size: 16px;
@@ -78,41 +72,67 @@
       border: none;
       border-radius: 5px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
       font-family: 'Kanit', sans-serif;
+      transition: background-color 0.3s ease;
     }
 
     button:hover {
       background-color: #45a049;
     }
 
-    button:active {
-      background-color: #3e8e41;
+    .footer {
+      text-align: center;
+      font-size: 0.9em;
+      color: #999;
+      margin: 20px 0;
     }
 
+    .success-message {
+      background-color: #e6ffed;
+      border: 1px solid #a1e6b9;
+      color: #2e7d32;
+      padding: 12px;
+      margin-top: 15px;
+      border-radius: 5px;
+      display: none;
+    }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>แจ้งการชำระเงิน</h1>
-    <form action="/submit_payment" method="POST" enctype="multipart/form-data">
+    <form id="paymentForm">
       <label for="name">ชื่อผู้ชำระเงิน:</label>
-      <input type="text" id="name" name="name" required placeholder="กรุณากรอกชื่อของคุณ">
+      <input type="text" id="name" name="name" required placeholder="กรอกชื่อของคุณ">
 
       <label for="invoice_number">หมายเลขใบแจ้งหนี้:</label>
-      <input type="text" id="invoice_number" name="invoice_number" required placeholder="กรุณากรอกหมายเลขใบแจ้งหนี้">
+      <input type="text" id="invoice_number" name="invoice_number" required placeholder="กรอกหมายเลขใบแจ้งหนี้">
 
       <label for="amount_paid">จำนวนเงินที่ชำระ:</label>
-      <input type="number" id="amount_paid" name="amount_paid" required placeholder="กรุณากรอกจำนวนเงิน">
+      <input type="number" id="amount_paid" name="amount_paid" required placeholder="จำนวนเงิน (บาท)">
 
       <label for="payment_date">วันที่ชำระเงิน:</label>
       <input type="date" id="payment_date" name="payment_date" required>
 
-      <label for="receipt">อัปโหลดไฟล์ใบเสร็จ:</label>
+      <label for="receipt">อัปโหลดใบเสร็จ:</label>
       <input type="file" id="receipt" name="receipt" accept="image/*,application/pdf" required>
 
       <button type="submit">ส่งข้อมูล</button>
     </form>
+
+    <div class="success-message" id="successMessage">
+      ✅ ระบบได้รับการชำระแล้ว<br>กรุณารอรับใบเสร็จภายใน 1 วันทางอีเมลที่ท่านแจ้งไว้
+    </div>
   </div>
+
+  <div class="footer">© 2025 เว็บไซต์แจ้งการชำระเงิน</div>
+
+  <script>
+    document.getElementById("paymentForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // ป้องกันการส่งจริง
+      document.getElementById("successMessage").style.display = "block";
+      this.reset(); // ล้างฟอร์ม
+    });
+  </script>
 </body>
 </html>
